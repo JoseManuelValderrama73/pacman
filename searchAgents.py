@@ -69,12 +69,18 @@ class MySearchAgent(Agent):
     def getAction(self, state):
         now = state.getPacmanPosition()
         self.already_been.append(now)
-        direction = random.choice(state.getLegalPacmanActions())
-        while (
-            state.generatePacmanSuccessor(direction).getPacmanPosition()
-            in self.already_been
-        ):
-            direction = random.choice(state.getLegalPacmanActions())
+        posibleMoves = state.getLegalPacmanActions()
+        direction = None
+
+        for move in posibleMoves:
+            if (
+                state.generatePacmanSuccessor(move).getPacmanPosition()
+                not in self.already_been
+            ):
+                direction = move
+
+        if not direction:
+            direction = random.choice(posibleMoves)
 
         return direction
 
