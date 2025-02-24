@@ -62,9 +62,13 @@ class GoWestAgent(Agent):
 #######################################################
 
 
+MOVEMENTS_STORED = 10
+
+
 class MySearchAgent(Agent):
     def __init__(self):
         self.already_been = []
+        self.last_movements = []
 
     def getAction(self, state):
         now = state.getPacmanPosition()
@@ -78,9 +82,16 @@ class MySearchAgent(Agent):
                 not in self.already_been
             ):
                 direction = move
+                self.last_movements.append(direction)
+                break
 
         if not direction:
-            direction = random.choice(posibleMoves)
+            if len(self.last_movements) < 2:
+                direction = random.choice(posibleMoves)
+                self.last_movements.append(direction)
+            else:
+                direction = Directions.REVERSE[self.last_movements[-1]]
+                self.last_movements.pop()
 
         return direction
 
