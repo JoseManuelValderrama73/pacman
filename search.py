@@ -70,9 +70,8 @@ def tinyMazeSearch(problem: SearchProblem) -> List[Directions]:
     Returns a sequence of moves that solves tinyMaze.  For any other maze, the
     sequence of moves will be incorrect, so only use this for tinyMaze.
     """
-    s = Directions.SOUTH
     w = Directions.WEST
-    return [s, s, w, s, w, w, s, w]
+    return [w, w, w]
 
 
 def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
@@ -90,22 +89,49 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
     print("Start's successors:", problem.getSuccessors(problem.getStartState()))
     """
     "*** YOUR CODE HERE ***"
-    already_been = []
+    actualState = problem.getStartState()
+    pila = [actualState]
+    alreadyVisited = [actualState]
     directions = []
-    now = problem.getStartState()
-    # while not problem.isGoalState(now):
-    for _ in range(100):
-        already_been.append(now)
-        for state in problem.getSuccessors(now):
-            if not state[0] in already_been:
-                next_state = state
-                break
-            next_state = state
-        directions.append(next_state[1])
-        now = next_state[0]
-
-    print(directions)
+    i = 0
+    while 1:
+        justDeleted = False
+        if problem.isGoalState(actualState):
+            break
+        successors = problem.getSuccessors(actualState)
+        if len(successors) != 0: # Si tiene hijos
+            try:
+                if len(successors) == 1:
+                    i = 0
+                nodo = successors[i]
+                while nodo in alreadyVisited:
+                    i += 1
+                    nodo = successors[i]
+                actualState = nodo[0]
+                print(nodo[1])
+                directions.append(nodo[1])
+                
+            except IndexError:
+                pila.pop()
+                directions.pop()
+                actualState = pila[-1]
+                i = 0
+        else: # Si no tiene hijos
+            pila.pop()
+            justDeleted = True
+            directions.pop()
+            actualState = pila[-1]
+            i += 1
+        if actualState not in pila and not justDeleted:
+            pila.append(actualState)
+        if actualState not in alreadyVisited:
+            alreadyVisited.append(actualState)
+        
     return directions
+
+
+
+
 
 
 def breadthFirstSearch(problem: SearchProblem) -> List[Directions]:
