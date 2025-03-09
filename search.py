@@ -104,13 +104,12 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
                 if len(successors) == 1:
                     i = 0
                 nodo = successors[i]
-                while nodo in alreadyVisited:
+                while nodo[0] in alreadyVisited:
                     i += 1
                     nodo = successors[i]
                 actualState = nodo[0]
                 print(nodo[1])
                 directions.append(nodo[1])
-                
             except IndexError:
                 pila.pop()
                 directions.pop()
