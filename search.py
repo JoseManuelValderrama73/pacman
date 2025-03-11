@@ -101,8 +101,7 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
         successors = problem.getSuccessors(actualState)
         if len(successors) != 0: # Si tiene hijos
             try:
-                if len(successors) == 1:
-                    i = 0
+                i = 0
                 nodo = successors[i]
                 while nodo[0] in alreadyVisited:
                     i += 1
@@ -111,8 +110,8 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
                 print(nodo[1])
                 directions.append(nodo[1])
             except IndexError:
-                pila.pop()
                 directions.pop()
+                pila.pop()
                 actualState = pila[-1]
                 i = 0
         else: # Si no tiene hijos
