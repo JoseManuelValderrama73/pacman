@@ -74,6 +74,50 @@ def tinyMazeSearch(problem: SearchProblem) -> List[Directions]:
     return [w, w, w]
 
 
+def depthFirstSearchRecursive(problem: SearchProblem, actualState, alreadyVisited, directions) -> List[Directions]:
+    if problem.isGoalState(actualState):
+        return directions
+    
+    alreadyVisited.append(actualState)  
+    successors = problem.getSuccessors(actualState)
+
+    for nodo in successors:
+        nextState, action, cost = nodo
+        
+        if nextState not in alreadyVisited:
+            directions.append(action)
+            result = depthFirstSearchRecursive(problem, nextState, alreadyVisited, directions)
+
+            if result:
+                return result
+            
+            directions.pop()
+
+    return []
+
+
+
+def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
+    """
+    Search the deepest nodes in the search tree first.
+
+    Your search algorithm needs to return a list of actions that reaches the
+    goal. Make sure to implement a graph search algorithm.
+
+    To get started, you might want to try some of these simple commands to
+    understand the search problem that is being passed in:
+
+    print("Start:", problem.getStartState())
+    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
+    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
+    """
+    "*** YOUR CODE HERE ***"
+    actualState = problem.getStartState()
+    alreadyVisited = [actualState]
+    directions = []
+    return depthFirstSearchRecursive(problem, actualState, alreadyVisited, directions)
+    
+'''
 def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
     """
     Search the deepest nodes in the search tree first.
@@ -107,7 +151,6 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
                     i += 1
                     nodo = successors[i]
                 actualState = nodo[0]
-                print(nodo[1])
                 directions.append(nodo[1])
             except IndexError:
                 directions.pop()
@@ -126,15 +169,14 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
             alreadyVisited.append(actualState)
         
     return directions
-
-
-
-
+'''
 
 
 def breadthFirstSearch(problem: SearchProblem) -> List[Directions]:
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
+
+    # la mejor opcion es coste + distancia
     util.raiseNotDefined()
 
 
@@ -152,10 +194,32 @@ def nullHeuristic(state, problem=None) -> float:
     return 0
 
 
-def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> List[Directions]:
+def aStarSearchRecursive(problem, actualState, alreadyVisited, directions, heuristic, queue) -> List:
+    alreadyVisited.add(actualState)
+    if problem.isGoalState(actualState):
+        return directions
+    
+    for nextState, action, _ in problem.getSuccessors(actualState):
+        if nextState not in alreadyVisited:
+            new_directions = directions + [action]  # Crear nueva lista en vez de modificar
+            priority = problem.getCostOfActions(new_directions) + heuristic(nextState, problem)
+            queue.push((nextState, new_directions), priority)
+
+    if queue.isEmpty():
+        return None  
+
+    nextState, new_directions = queue.pop()
+    return aStarSearchRecursive(problem, nextState, alreadyVisited, new_directions, heuristic, queue)
+
+
+def aStarSearch(problem, heuristic=nullHeuristic) -> List:
     """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    actualState = problem.getStartState()
+    alreadyVisited = set()  # Usar set para mejor eficiencia
+    queue = util.PriorityQueue()
+    
+    return aStarSearchRecursive(problem, actualState, alreadyVisited, [], heuristic, queue) or []  # Evitar None
+
 
 
 # Abbreviations
