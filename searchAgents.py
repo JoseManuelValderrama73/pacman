@@ -69,6 +69,7 @@ class MySearchAgent(Agent):
     def __init__(self):
         self.already_been = []
         self.last_movements = []
+        self.steps = 0
 
     def getAction(self, state):
         now = state.getPacmanPosition()
@@ -94,8 +95,16 @@ class MySearchAgent(Agent):
                 direction = Directions.REVERSE[self.last_movements[-1]]
                 self.last_movements.pop()
 
-        if len(self.last_movements) > MAX_MOVES_STORED:
-            self.last_movements.pop(0)
+        #if len(self.last_movements) > MAX_MOVES_STORED:
+        #    self.last_movements.pop(0)
+        
+        self.steps += 1
+        print(f'''
+Coste acumulado: 
+Total de pasos: {self.steps}
+Casillas exploradas: {len(self.already_been)}
+Ratio de repeticion: {self.steps / len(self.already_been)}
+''')
 
         return direction
 

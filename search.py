@@ -215,7 +215,7 @@ def aStarSearchRecursive(problem, actualState, alreadyVisited, directions, heuri
 def aStarSearch(problem, heuristic=nullHeuristic) -> List:
     """Search the node that has the lowest combined cost and heuristic first."""
     actualState = problem.getStartState()
-    alreadyVisited = set()  # Usar set para mejor eficiencia
+    alreadyVisited = set()
     queue = util.PriorityQueue()
     
     return aStarSearchRecursive(problem, actualState, alreadyVisited, [], heuristic, queue) or []  # Evitar None
