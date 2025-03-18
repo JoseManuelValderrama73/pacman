@@ -69,7 +69,6 @@ class MySearchAgent(Agent):
     def __init__(self):
         self.already_been = []
         self.last_movements = []
-        self.steps = 0
 
     def getAction(self, state):
         now = state.getPacmanPosition()
@@ -95,7 +94,7 @@ class MySearchAgent(Agent):
                 direction = Directions.REVERSE[self.last_movements[-1]]
                 self.last_movements.pop()
 
-        #if len(self.last_movements) > MAX_MOVES_STORED:
+       #if len(self.last_movements) > MAX_MOVES_STORED:
         #    self.last_movements.pop(0)
         
         self.steps += 1
@@ -179,12 +178,17 @@ class SearchAgent(Agent):
         if self.actions == None:
             self.actions = []
         totalCost = problem.getCostOfActions(self.actions)
+        totalTime = time.time() - starttime  # Tiempo de ejecución
         print(
             "Path found with total cost of %d in %.1f seconds"
             % (totalCost, time.time() - starttime)
         )
+        #Numero de nodos explorados
         if "_expanded" in dir(problem):
             print("Search nodes expanded: %d" % problem._expanded)
+        print(f"Cantidad de pasos realizados: {len(self.actions)}")
+        print(f"Tiempo total de ejecución: {totalTime:.4f} segundos\n")
+        #print(f"Eficiencia: { 1 / problem._expanded:.4f} nodos por paso")
 
     def getAction(self, state):
         """
