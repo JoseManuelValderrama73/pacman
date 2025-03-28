@@ -4,7 +4,7 @@
 # educational purposes provided that (1) you do not distribute or publish
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
-#
+# 
 # Attribution Information: The Pacman AI projects were developed at UC Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
@@ -16,11 +16,10 @@
 In search.py, you will implement generic search algorithms which are called by
 Pacman agents (in searchAgents.py).
 """
-import time
+
 import util
 from game import Directions
 from typing import List
-
 
 class SearchProblem:
     """
@@ -65,13 +64,16 @@ class SearchProblem:
         util.raiseNotDefined()
 
 
+
+
 def tinyMazeSearch(problem: SearchProblem) -> List[Directions]:
     """
     Returns a sequence of moves that solves tinyMaze.  For any other maze, the
     sequence of moves will be incorrect, so only use this for tinyMaze.
     """
+    s = Directions.SOUTH
     w = Directions.WEST
-    return [w, w, w]
+    return  [s, s, w, s, w, w, s, w]
 
 
 def depthFirstSearchRecursive(problem: SearchProblem, actualState, alreadyVisited, directions) -> List[Directions]:
@@ -95,8 +97,6 @@ def depthFirstSearchRecursive(problem: SearchProblem, actualState, alreadyVisite
 
     return []
 
-
-
 def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
     """
     Search the deepest nodes in the search tree first.
@@ -116,75 +116,16 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
     alreadyVisited = [actualState]
     directions = []
     return depthFirstSearchRecursive(problem, actualState, alreadyVisited, directions)
-    
-'''
-def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
-    """
-    Search the deepest nodes in the search tree first.
-
-    Your search algorithm needs to return a list of actions that reaches the
-    goal. Make sure to implement a graph search algorithm.
-
-    To get started, you might want to try some of these simple commands to
-    understand the search problem that is being passed in:
-
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
-    """
-    "*** YOUR CODE HERE ***"
-    actualState = problem.getStartState()
-    pila = [actualState]
-    alreadyVisited = [actualState]
-    directions = []
-    i = 0
-    while 1:
-        justDeleted = False
-        if problem.isGoalState(actualState):
-            break
-        successors = problem.getSuccessors(actualState)
-        if len(successors) != 0: # Si tiene hijos
-            try:
-                i = 0
-                nodo = successors[i]
-                while nodo[0] in alreadyVisited:
-                    i += 1
-                    nodo = successors[i]
-                actualState = nodo[0]
-                directions.append(nodo[1])
-            except IndexError:
-                directions.pop()
-                pila.pop()
-                actualState = pila[-1]
-                i = 0
-        else: # Si no tiene hijos
-            pila.pop()
-            justDeleted = True
-            directions.pop()
-            actualState = pila[-1]
-            i += 1
-        if actualState not in pila and not justDeleted:
-            pila.append(actualState)
-        if actualState not in alreadyVisited:
-            alreadyVisited.append(actualState)
-        
-    return directions
-'''
-
 
 def breadthFirstSearch(problem: SearchProblem) -> List[Directions]:
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-
-    # la mejor opcion es coste + distancia
     util.raiseNotDefined()
-
 
 def uniformCostSearch(problem: SearchProblem) -> List[Directions]:
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
-
 
 def nullHeuristic(state, problem=None) -> float:
     """
@@ -192,7 +133,6 @@ def nullHeuristic(state, problem=None) -> float:
     goal in the provided SearchProblem.  This heuristic is trivial.
     """
     return 0
-
 
 def aStarSearchRecursive(problem, actualState, alreadyVisited, directions, heuristic, queue) -> List:
     alreadyVisited.add(actualState)
@@ -211,9 +151,9 @@ def aStarSearchRecursive(problem, actualState, alreadyVisited, directions, heuri
     nextState, new_directions = queue.pop()
     return aStarSearchRecursive(problem, nextState, alreadyVisited, new_directions, heuristic, queue)
 
-
-def aStarSearch(problem, heuristic=nullHeuristic) -> List:
+def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> List[Directions]:
     """Search the node that has the lowest combined cost and heuristic first."""
+    "*** YOUR CODE HERE ***"
     actualState = problem.getStartState()
     alreadyVisited = set()
     queue = util.PriorityQueue()
@@ -221,9 +161,13 @@ def aStarSearch(problem, heuristic=nullHeuristic) -> List:
     return aStarSearchRecursive(problem, actualState, alreadyVisited, [], heuristic, queue) or []  # Evitar None
 
 
+def exploration(problem):
+     # Stack for DFS traversal
+    util.raiseNotDefined()
 
 # Abbreviations
 bfs = breadthFirstSearch
 dfs = depthFirstSearch
 astar = aStarSearch
 ucs = uniformCostSearch
+exp = exploration
