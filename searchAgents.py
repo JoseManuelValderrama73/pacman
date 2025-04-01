@@ -169,7 +169,7 @@ class SearchAgent(Agent):
             print("Search nodes expanded: %d" % problem._expanded)
         print(f"Cantidad de pasos realizados: {len(self.actions)}")
         print(f"Tiempo total de ejecución: {totalTime:.4f} segundos\n")
-        #print(f"Eficiencia: { 1 / problem._expanded:.4f} nodos por paso")
+        print(f"Eficiencia: {len(self.actions) / problem._expanded:.4f}")
 
     def getAction(self, state):
         """
