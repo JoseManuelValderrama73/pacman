@@ -139,7 +139,7 @@ def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> List[Directi
     start = problem.getStartState()
     
     queue = util.PriorityQueue()
-    queue.push((inicio, [], 0), heuristic(start, problem))
+    queue.push((start, [], 0), heuristic(start, problem))
 
     already_visited = {}
 
