@@ -90,7 +90,6 @@ class MySearchAgent(Agent):
         
         self.steps += 1
         print(f'''
-Coste acumulado: 
 Total de pasos: {self.steps}
 Casillas exploradas: {len(self.already_been)}
 Ratio de repeticion: {self.steps / len(self.already_been)}
