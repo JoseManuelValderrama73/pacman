@@ -134,31 +134,33 @@ def nullHeuristic(state, problem=None) -> float:
     """
     return 0
 
-def aStarSearchRecursive(problem, actualState, alreadyVisited, directions, heuristic, queue) -> List:
-    alreadyVisited.add(actualState)
-    if problem.isGoalState(actualState):
-        return directions
-    
-    for nextState, action, _ in problem.getSuccessors(actualState):
-        if nextState not in alreadyVisited:
-            new_directions = directions + [action]  # Crear nueva lista en vez de modificar
-            priority = problem.getCostOfActions(new_directions) + heuristic(nextState, problem)
-            queue.push((nextState, new_directions), priority)
-
-    if queue.isEmpty():
-        return None  
-
-    nextState, new_directions = queue.pop()
-    return aStarSearchRecursive(problem, nextState, alreadyVisited, new_directions, heuristic, queue)
 
 def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic) -> List[Directions]:
-    """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
-    actualState = problem.getStartState()
-    alreadyVisited = set()
-    queue = util.PriorityQueue()
+    start = problem.getStartState()
     
-    return aStarSearchRecursive(problem, actualState, alreadyVisited, [], heuristic, queue) or []  # Evitar None
+    queue = util.PriorityQueue()
+    queue.push((inicio, [], 0), heuristic(start, problem))
+
+    already_visited = {}
+
+    while not queue.isEmpty():
+        current_state, path, cost = queue.pop()
+
+        if problem.isGoalState(current_state):
+            return path
+
+        if current_state in already_visited and already_visited[current_state] <= cost:
+            continue
+
+        already_visited[current_state] = cost
+
+        for next_state, action, step_cost in problem.getSuccessors(current_state):
+            new_cost = cost + step_cost
+            new_path = path + [action]
+            priority = new_cost + heuristic(next_state, problem)
+            queue.push((next_state, new_path, new_cost), priority)
+
+    return []
 
 
 def exploration(problem):
