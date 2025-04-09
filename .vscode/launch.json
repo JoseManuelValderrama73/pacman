@@ -10,7 +10,7 @@
             "type": "debugpy",
             "request": "launch",
             "program": "${file}",
-            "args": ["--layout", "bigMaze", "-k", "0", "--pacman", "MiAgente_DFS"],
+            "args": ["-p", "SearchAgent", "--layout", "smallSearch" ,"-a", "fn=bfs"],
             "console": "integratedTerminal"
         }
     ]

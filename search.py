@@ -117,10 +117,31 @@ def depthFirstSearch(problem: SearchProblem) -> List[Directions]:
     directions = []
     return depthFirstSearchRecursive(problem, actualState, alreadyVisited, directions)
 
+    
+
 def breadthFirstSearch(problem: SearchProblem) -> List[Directions]:
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    alreadyVisited = set()
+    cola = util.Queue()
+    
+    alreadyVisited.add(problem.getStartState())
+    cola.push((problem.getStartState(), []))
+
+    while not cola.isEmpty():
+        actualState, directions = cola.pop()
+
+        if problem.isGoalState(actualState):
+            return directions
+        for nextState, action, _ in problem.getSuccessors(actualState):
+            if nextState not in alreadyVisited:
+                cola.push((nextState, directions + [action]))
+                alreadyVisited.add(nextState)
+    
+    return []
+            
+
+
 
 def uniformCostSearch(problem: SearchProblem) -> List[Directions]:
     """Search the node of least total cost first."""
